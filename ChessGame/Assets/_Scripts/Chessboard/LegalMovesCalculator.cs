@@ -153,7 +153,12 @@ public class LegalMovesCalculator : MonoBehaviour
         {
             var targetSquare = GetSquareAtOffset(currentSquare, offset, board);
             if (targetSquare != null)
-                moves.Add(targetSquare);
+            {
+                if (!targetSquare.OccupyingPiece || targetSquare.OccupyingPiece.PieceColor != currentSquare.OccupyingPiece.PieceColor)
+                {
+                    moves.Add(targetSquare);
+                }
+            }               
         }
         return moves;
     }
@@ -190,10 +195,10 @@ public class LegalMovesCalculator : MonoBehaviour
 
     private Square GetSquareAtOffset(Square currentSquare, Vector2Int offset, Square[,] board)
     {
-        var newRow = currentSquare.RankIndex + offset.x;
-        var newCol = currentSquare.FileIndex + offset.y;
-        if (newRow >= 0 && newRow < board.GetLength(0) && newCol >= 0 && newCol < board.GetLength(1))
-            return board[newRow, newCol];
+        var newFile = currentSquare.FileIndex + offset.x;
+        var newRank = currentSquare.RankIndex + offset.y;
+        if (newFile >= 0 && newFile < 8 && newRank >= 0 && newRank < 8)
+            return board[newFile, newRank];
         return null;
     }
 }
